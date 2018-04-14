@@ -1,0 +1,112 @@
+@color-main-light: #41bcc7; 
+@color-main-dark: darken(@color-main-light, 8%); 
+@color-white: #ffffff;
+
+@width-page: 750px;
+
+@media (min-width: 768px) {
+  .container {
+    width: @width-page;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: @width-page;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: @width-page;
+  }
+}
+
+:focus {
+    outline: none;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6  {
+  color: @color-main-dark;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+a {
+  color: @color-main-light;
+  text-decoration: none;
+  &:hover, &:focus {
+    color: @color-main-light;
+    text-decoration: underline;
+  }
+}
+
+.btn-primary {
+  background-color: @color-main-light;
+  border-color: @color-main-light;
+  &:hover {
+    background-color: @color-main-dark;
+    border-color: @color-main-dark;
+  }
+}
+
+.form-control:focus {
+  border-color: @color-main-light;
+}
+
+.navbar {
+  border-radius: 0px;
+  min-height: 30px;
+  .navbar-nav {
+    float: right;
+    margin: 5px;
+  }
+  .nav>li {
+    float: right;
+  }
+}
+
+.navbar-inverse {
+  background-color: @color-main-light;
+  border-color: @color-main-light;
+  .nav {
+    color: @color-white;
+  }
+  .navbar-nav {
+    >li>a {
+      color: @color-white;
+      line-height: 20px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+      &:hover, &:focus {
+        color: @color-white;
+        text-decoration: underline;
+      }
+    }
+    .active {
+      >a, >a:hover, >a:focus {
+        background-color: @color-main-dark;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.pagination {
+  > li {
+    >a, >span{
+      background-color: @color-main-dark;
+    }
+    >a:hover, >a:focus, >span:hover, >span:focus{
+      background-color: darken(@color-main-dark, 5%);
+    }
+  }
+  .disabled {
+    >a, >a:hover, >a:focus, >span, >span:hover, >span:focus{
+      background-color: @color-main-light;
+      cursor: default;
+    }
+  }
+}

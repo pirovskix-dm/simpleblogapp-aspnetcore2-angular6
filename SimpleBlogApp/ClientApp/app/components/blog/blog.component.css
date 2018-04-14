@@ -1,0 +1,45 @@
+.logo-text {
+  text-align: center;
+  font-size: 70px;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.tag-title{
+  margin-left: 15px;
+}
+
+.tag {
+  font-weight: bold;
+  text-decoration: underline;
+  padding: 4px;
+}
+
+.tag:hover{
+  text-decoration: none;
+}
+
+.post {
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+.post-title {
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.date-created {
+  margin-bottom: 0px;
+  color: #aaaaaa;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.short-content {
+  font-size: 18px;
+}
+
+.read-full {
+  float: right
+}

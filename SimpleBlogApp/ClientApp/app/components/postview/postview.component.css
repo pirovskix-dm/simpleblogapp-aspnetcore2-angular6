@@ -1,0 +1,47 @@
+.small-logo-text {
+  color: #41bcc7b5;
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.tag {
+  font-weight: bold;
+  text-decoration: underline;
+  padding: 4px;
+}
+
+.tag:hover {
+  text-decoration: none;
+}
+
+.category {
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.post {
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+.post-title {
+  margin-top: 20px;
+}
+
+.date-created {
+  margin-bottom: 0px;
+  color: #aaaaaa;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.content {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.read-full {
+  float: right
+}

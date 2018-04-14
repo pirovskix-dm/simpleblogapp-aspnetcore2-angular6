@@ -1,0 +1,8 @@
+.post-form .text-align-left {
+    text-align: left;
+}
+
+.content-textarea{
+    min-height: 100px;
+    resize: vertical;
+}

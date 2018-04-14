@@ -1,0 +1,24 @@
+<div class='main-nav'>
+    <div class="container"><div class="row">
+        <div class='navbar navbar-inverse' role="navigation">
+            <ul class='nav navbar-nav'>
+                
+                <li *ngIf="showAdminNav">
+                    <a role="button" (click)="onLogOut()">log out</a>
+                </li>
+
+                <li *ngIf="showAdminNav" [routerLinkActive]="['active']">
+                    <a [routerLink]="['/admin']">administration</a>
+                </li>
+                
+                <li [routerLinkActive]="['active']">
+                    <a>about</a>
+                </li>
+
+                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                    <a [routerLink]="['']">home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

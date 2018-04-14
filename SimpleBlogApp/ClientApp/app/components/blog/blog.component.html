@@ -1,0 +1,47 @@
+<div class="container">
+  <h1 class="logo-text">Simple Blog App</h1>
+</div>
+
+<div class="container">
+  <div *ngIf="query.tagId" class="row">
+    <h3 class="tag-title">{{currentTag}}</h3>
+  </div>
+  <div class="row post" *ngFor="let post of posts">
+      <div class="container">
+          
+          <!-- Tags -->
+          <div>
+              <a class="tag" *ngFor="let tag of post.tags" [routerLink]="['/tag/', tag.id]">{{tag.name}}</a>
+          </div>
+          
+          <!-- Title -->
+          <div>
+            <h2 class="post-title" role="button" [routerLink]="['/post/', post.id]" >{{post.title}}</h2>
+          </div>
+          
+          <!-- Date -->
+          <div>
+            <p class="date-created" >{{post.dateCreated}}</p>
+          </div>
+          
+          <!-- Content -->
+          <div>
+            <p class="short-content">{{post.shortContent}}</p>
+          </div>
+          
+          <!-- Read -->
+          <div class="read-full">
+              <a  [routerLink]="['/post/', post.id]">read >>></a>
+          </div>
+            
+      </div>
+  </div>
+</div>
+
+<!-- Pagination -->
+<app-pagination 
+  [total-items]="totalItems" 
+  [page-size]="query.pageSize" 
+  [current-page]="query.page"
+  (page-changed)="onPagination($event)">
+</app-pagination>

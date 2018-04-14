@@ -1,0 +1,43 @@
+<h2>Categories</h2>
+
+<form class="post-form" #postForm="ngForm" (ngSubmit)="create()" novalidate>
+
+  <!-- name -->
+  <div class="form-group">
+    <input 
+      required
+      id="categoryName"
+      type="text"
+      class="form-control" 
+      [(ngModel)]="saveCategory.name" 
+      name="categoryName" 
+      #categoryName="ngModel" >
+  </div>
+
+  <!-- Create button -->
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" [disabled]="postForm.invalid">Create</button>
+  </div>
+
+</form>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let c of categories">
+      <td>{{ c.id }}</td>
+      <td>{{ c.name }}</td>
+      <td> 
+        <a role="button" (click)="delete(c.id)">Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<a [routerLink]="['/admin']" class="btn btn-primary">Back</a>

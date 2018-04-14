@@ -1,0 +1,32 @@
+<div class="container">
+  <h1 class="small-logo-text">Simple Blog App</h1>
+</div>
+
+<h2 *ngIf="pageNotFound">Post Not Found</h2>
+
+<div *ngIf="!pageNotFound" class="container">
+    <!-- Tags -->
+    <div>
+        <a class="tag" *ngFor="let tag of post.tags" [routerLink]="['/tag/', tag.id]">{{tag.name}}</a>
+    </div>
+
+    <!-- Category -->
+    <div>
+      <h4 class="category">{{post.category.name}}</h4>
+    </div>
+    
+    <!-- Title -->
+    <div>
+      <h2 class="post-title" >{{post.title}}</h2>
+    </div>
+    
+    <!-- Date -->
+    <div>
+      <p class="date-created" >{{post.dateCreated}}</p>
+    </div>
+    
+    <!-- Content -->
+    <div>
+      <p class="content">{{post.content}}</p>
+    </div>
+</div>

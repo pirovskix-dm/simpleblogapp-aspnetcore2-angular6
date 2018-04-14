@@ -1,0 +1,93 @@
+
+<div class="container">
+<h2>Posts</h2>
+
+<!-- New post button -->
+<div class="form-group">
+  <a [routerLink]="['/post/create']" class="btn btn-primary">New Post</a>
+  <a [routerLink]="['/admin/categories']" class="btn btn-primary">Categories</a>
+</div>
+
+<!-- Gategori filter -->
+<div class="row form-group">
+  <div class="form-horizontal col-xs-12">
+    <div class="row">
+      <label for="category" class="control-label col-xs-2">Category</label>
+      <div class="col-xs-4">
+        <select id="category" class="form-control" [(ngModel)]="query.categoryId" (change)="onCategoriesFilterChange()">
+          <option value=""></option>
+          <option *ngFor="let c of categories" value="{{c.id}}">{{c.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="row form-group">
+  <div class="form-horizontal col-xs-12">
+      <div class="row">
+        <label for="search" class="control-label col-xs-2">Search</label>
+        <div class="col-xs-4">
+          <input id="search" type="text" class="form-control" [(ngModel)]="searchString" (keyup)="onSearch()">
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="row">
+<table *ngIf="totalItems" class='table table-hover table-condensed posts-table .table-bordered'>
+  <thead>
+    <tr>
+      <th *ngFor="let c of columns">
+        <div *ngIf="c.isSortable" (click)="sortBy(c.key)" role="button">
+          {{c.title}}
+          <i *ngIf="query.sortBy === c.key"
+            class="fa"
+            [class.fa-sort-asc]="query.isSortAscending"
+            [class.fa-sort-desc]="!query.isSortAscending"
+          ></i>
+        </div>
+        <div *ngIf="!c.isSortable">
+          {{c.title}}
+        </div>
+      </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of posts">
+      <td class="id-column">{{ p.id }}</td>
+      <td class="title-column">{{ p.title }}</td>
+      <td class="category-column">{{ p.category.name }}</td>
+      <td class="tag-column"><p [innerHTML]='tagsToString(p.tags)'></p></td>
+      <td class="date-column">{{ p.dateCreated }}</td>
+      <td class="menu-column"> 
+        <a [routerLink]="['/post/', p.id]">View</a> |
+        <a [routerLink]="['/post/edit/', p.id]">Edit</a> |
+        <a role="button" (click)="delete(p)">Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p *ngIf="!totalItems">Nothing found</p>
+
+<!-- Page Size -->
+<div class="row form-group">
+  <div class="col-xs-2">
+      <select id="pageSize" class="form-control" [(ngModel)]="query.pageSize" (change)="onCategoriesFilterChange()">
+        <option *ngFor="let size of pageSizeFileter" value="{{size}}">{{size}}</option>
+      </select>
+  </div>
+</div>
+
+<!-- Pagination -->
+<app-pagination 
+  [total-items]="totalItems" 
+  [page-size]="query.pageSize" 
+  [current-page]="query.page"
+  (page-changed)="onPagination($event)">
+</app-pagination>
+</div>
