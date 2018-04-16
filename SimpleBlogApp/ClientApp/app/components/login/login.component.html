@@ -2,40 +2,31 @@
 
 <div class="alert alert-danger" *ngIf="fail">Fail to login.</div>
 
-<form class="post-form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
 <div class="col-xs-11">
 
   <!-- UserName -->
-  <div class="form-group has-feedback" [class.has-error]="userName.touched && !userName.valid">
-    <label for="userName">User Name</label>
-    <input 
-      required
-      id="userName"
-      type="text"
-      class="form-control" 
-      [(ngModel)]="loginModel.name" 
-      name="userName" 
-      #userName="ngModel" >
-    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="userName.touched && !userName.valid"></span>
+  <div class="form-group has-feedback" [class.has-error]="validateControl('name')">
+    <label class="center-block">
+      <input type="text" class="form-control" formControlName="name">
+      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="validateControl('name')">
+      </span>
+    </label>
   </div>
 
   <!-- Password -->
-  <div class="form-group has-feedback" [class.has-error]="password.touched && !password.valid">
-    <label for="password">Password</label>
-      <input 
-        required
-        id="password"
-        type="password" 
-        class="form-control resize-vertical" 
-        [(ngModel)]="loginModel.password" 
-        name="password" 
-        #password="ngModel" >
-    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="password.touched && !password.valid"></span>
+  <div class="form-group has-feedback" [class.has-error]="validateControl('password')">
+    <label class="center-block">
+      <input type="password" class="form-control" formControlName="password">
+      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="validateControl('password')">
+      </span>
+    </label>
   </div>
 
   <!-- Buttons -->
   <div class="form-group">
     <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Log In</button>
   </div>
+  
 </div>
 </form>

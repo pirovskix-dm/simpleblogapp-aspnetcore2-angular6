@@ -1,22 +1,15 @@
 <h2>Categories</h2>
 
-<form class="post-form" #postForm="ngForm" (ngSubmit)="create()" novalidate>
+<form [formGroup]="categoryForm" (ngSubmit)="create()" novalidate>
 
   <!-- name -->
   <div class="form-group">
-    <input 
-      required
-      id="categoryName"
-      type="text"
-      class="form-control" 
-      [(ngModel)]="saveCategory.name" 
-      name="categoryName" 
-      #categoryName="ngModel" >
+    <input type="text" class="form-control" formControlName="name">
   </div>
 
   <!-- Create button -->
   <div class="form-group">
-    <button type="submit" class="btn btn-primary" [disabled]="postForm.invalid">Create</button>
+    <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">Create</button>
   </div>
 
 </form>

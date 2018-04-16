@@ -43,6 +43,8 @@ namespace SimpleBlogApp
 
 			//services.BuildServiceProvider().GetService<SimpleBlogAppDbContext>().Database.Migrate();
 
+			services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<SimpleBlogAppDbContext>();
+
 			//var policy = new AuthorizationPolicyBuilder()
 			//	.RequireAuthenticatedUser()
 			//	.Build();
