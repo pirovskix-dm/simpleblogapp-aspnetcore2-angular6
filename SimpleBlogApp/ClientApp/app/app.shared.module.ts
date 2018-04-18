@@ -15,6 +15,7 @@ import { PostviewComponent } from './components/postview/postview.component';
 import { BlogComponent } from './components/blog/blog.component';
 import { LoginComponent } from './components/login/login.component';
 import { CategoriesComponent } from './components/categories/categories.component';
+import { AboutComponent } from './components/about/about.component';
 
 import { PostService } from './services/post.service';
 import { CategoryService } from './services/category.service';
@@ -34,7 +35,8 @@ import { AuthGuard } from './guards/auth.guard';
         PostviewComponent,
         BlogComponent,
         LoginComponent,
-        CategoriesComponent
+        CategoriesComponent,
+        AboutComponent
     ],
     imports: [
         CommonModule,
@@ -52,6 +54,7 @@ import { AuthGuard } from './guards/auth.guard';
             { path: 'post/create', component: PostformComponent, canActivate: [AuthGuard] },
             { path: 'post/:id', component: PostviewComponent },
             { path: 'post/edit/:id', component: PostformComponent, canActivate: [AuthGuard] },
+            { path: 'about', component: AboutComponent },
             { path: 'error', redirectTo: ''},
             { path: 'home', redirectTo: ''},
             { path: '**', redirectTo: '' }
