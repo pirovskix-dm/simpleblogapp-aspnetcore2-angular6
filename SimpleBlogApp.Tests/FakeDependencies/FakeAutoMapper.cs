@@ -35,7 +35,7 @@ namespace SimpleBlogApp.Tests.FakeDependencies
 			mockAutoMapper.SetupMap((SavePostViewModel sp) => new Post());
 			mockAutoMapper.SetupMap((IEnumerable<Post> ps) => ps.Select(p => new PostViewModel() { Id = p.Id }).ToList());
 			mockAutoMapper.SetupMap((PostQueryViewModel qvm) => new PostQuery());
-			mockAutoMapper.SetupMap((QueryResult<Post> qvm) => new QueryResultViewModel<PostViewModel>() {
+			mockAutoMapper.SetupMap((QueryResult<Post> qvm) => new QueryResult<PostViewModel>() {
 				TotalItems = qvm.TotalItems,
 				Items = qvm.Items.Select(p => new PostViewModel() { Id = p.Id })
 			});
@@ -44,6 +44,7 @@ namespace SimpleBlogApp.Tests.FakeDependencies
 		private void CategorySetup()
 		{
 			mockAutoMapper.SetupMap((Category c) => new CategoryViewModel() { Id = c.Id });
+			mockAutoMapper.SetupMap((SaveCategoryViewModel sc) => new Category());
 			mockAutoMapper.SetupMap((IEnumerable<Category> cs) => cs.Select(c => new CategoryViewModel() { Id = c.Id }).ToList());
 		}
 

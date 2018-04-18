@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using SimpleBlogApp.Core.Interfaces;
+﻿using SimpleBlogApp.Core.Interfaces;
 using SimpleBlogApp.Core.Models;
 using SimpleBlogApp.Services.Interfaces;
 using SimpleBlogApp.ViewModels.ViewModels;
@@ -13,12 +12,10 @@ namespace SimpleBlogApp.Services
 	public class TagService : ITagService
 	{
 		private readonly ITagRepository tagRepository;
-		private readonly IMapper mapper;
 
-		public TagService(ITagRepository tagRepository, IMapper mapper)
+		public TagService(ITagRepository tagRepository)
 		{
 			this.tagRepository = tagRepository;
-			this.mapper = mapper;
 		}
 
 		public async Task<IEnumerable<Tag>> FindByNamesAndAddIfNotExists(IEnumerable<string> tags)

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleBlogApp.Services.Interfaces;
@@ -14,13 +13,11 @@ namespace SimpleBlogApp.Controllers
 	[Route("api/Categories")]
 	public class CategoriesController : Controller
 	{
-		private readonly IMapper mapper;
 		private readonly IUnitOfWorkService unitOfWork;
 		private readonly ICategoryService categoryService;
 
-		public CategoriesController(IMapper mapper, IUnitOfWorkService unitOfWork, ICategoryService categoryService)
+		public CategoriesController(IUnitOfWorkService unitOfWork, ICategoryService categoryService)
 		{
-			this.mapper = mapper;
 			this.unitOfWork = unitOfWork;
 			this.categoryService = categoryService;
 		}

@@ -26,13 +26,27 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 		[Fact]
 		public async Task GetAllAsync_ValidRequest_ShouldBeReturned()
 		{
-			var posts = await CreatePostsInDBAsync() as IEnumerable<Post>;
+			var posts = await CreatePostsInDBAsync(20) as IEnumerable<Post>;
 
 			var result = await repository.GetAllAsync(p => p);
 
 			result.Should().NotBeNullOrEmpty();
 			result.Count().Should().Be(posts.Count());
-			result.Should().BeEquivalentTo(posts, opt => opt.Excluding(p => p.Category));
+			result.Should().BeEquivalentTo(posts, opt => opt
+				.Excluding(p => p.Category)
+				.Excluding(p => p.Tags));
+		}
+
+		[Fact]
+		public async Task GetTagsAsync_ValidRequest_ShouldBeReturned()
+		{
+			var posts = await CreatePostsInDBAsync(20);
+			int tagsCount = posts.Select(p => p.Tags.Count()).Sum();
+
+			var result = await repository.GetTagsAsync(t => t);
+
+			result.Should().NotBeNullOrEmpty();
+			result.Count().Should().Be(tagsCount);
 		}
 
 		[Fact]
@@ -43,7 +57,12 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 			var result = await repository.GetAsync(post.Id, p => p);
 
 			result.Should().NotBeNull();
-			result.Should().BeEquivalentTo(post, opt => opt.Excluding(p => p.Category));
+			result.Should().BeEquivalentTo(post, opt => opt
+				.Excluding(p => p.Category)
+				.Excluding(p => p.Tags));
+			result.Category.Should().NotBeNull();
+			result.Tags.Should().NotBeNullOrEmpty();
+			result.Tags.Count().Should().Be(post.Tags.Count());
 		}
 
 		[Fact]
@@ -124,16 +143,18 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 			context.Entry(changedPost).State = EntityState.Detached;
 			var updatedPost = await context.Posts.SingleOrDefaultAsync(p => p.Id == postToUpdate.Id);
 			updatedPost.Should().NotBeNull();
-			updatedPost.Should().BeEquivalentTo(updatedPostShouldBe, opt => opt.Excluding(p => p.Category));
+			updatedPost.Should().BeEquivalentTo(updatedPostShouldBe, opt => opt
+				.Excluding(p => p.Category)
+				.Excluding(p => p.Tags));
 		}
 
 		[Fact]
 		public async Task GetQueryResultAsyncWithPaging_ValidRequest_ShouldBeReturned()
 		{
-			var posts = await CreatePostsInDBAsync();
+			var posts = await CreatePostsInDBAsync(20);
 			var queryObj = new PostQuery()
 			{
-				CategoryId = 2,
+				CategoryId = 1,
 				SortBy = "Id",
 				IsSortAscending = false,
 				Page = 2,
@@ -154,20 +175,24 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 			result.TotalItems.Should().Be(queryResultShouldBe.TotalItems);
 			result.Items.Should().NotBeNullOrEmpty();
 			result.Items.Count().Should().Be(queryResultShouldBe.Items.Count());
-			result.Items.Should().BeEquivalentTo(queryResultShouldBe.Items, opt => opt.Excluding(p => p.Category));
+			result.Items.Should().BeEquivalentTo(queryResultShouldBe.Items, opt => opt
+				.Excluding(p => p.Category)
+				.Excluding(p => p.Tags));
 		}
 
-		private async Task<List<Post>> CreatePostsInDBAsync()
+		private async Task<List<Post>> CreatePostsInDBAsync(int count)
 		{
-			await CreateCategoriesInDBAsync();
-			var posts = Enumerable.Range(1, 20).Select(x => new Post()
+			await CreateCategoriesInDBAsync(2);
+			var tags = await CreateTagsInDBAsync(3);
+			var posts = Enumerable.Range(1, count).Select(x => new Post()
 			{
 				Id = x,
 				Title = "Title_" + x.ToString(),
 				ShortContent = "ShortContent_" + x.ToString(),
 				Content = "Content_" + x.ToString(),
-				CategoryId = x < 10 ? 1 : 2,
-				IsActive = true
+				CategoryId = x < (count/2) ? 1 : 2,
+				IsActive = true,
+				Tags = tags.Select(t => new PostTag() { TagId = t.Id }).ToList()
 			}).ToList();
 			context.Posts.AddRange(posts);
 			await context.SaveChangesAsync();
@@ -178,14 +203,16 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 
 		private async Task<Post> CreatePostInDBAsync()
 		{
-			await CreateCategoriesInDBAsync();
+			await CreateCategoriesInDBAsync(1);
+			var tags = await CreateTagsInDBAsync(3);
 			var post = new Post()
 			{
 				Title = "Title_1",
 				ShortContent = "ShortContent_1",
 				Content = "Content_1",
 				CategoryId = 1,
-				IsActive = true
+				IsActive = true,
+				Tags = tags.Select(t => new PostTag() { TagId = t.Id }).ToList()
 			};
 			context.Posts.Add(post);
 			await context.SaveChangesAsync();
@@ -193,14 +220,24 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 			return post;
 		}
 
-		private async Task<List<Category>> CreateCategoriesInDBAsync()
+		private async Task<List<Category>> CreateCategoriesInDBAsync(int count)
 		{
-			var categories = Enumerable.Range(1, 4).Select(x => new Category() { Id = x }).ToList();
+			var categories = Enumerable.Range(1, count).Select(x => new Category() { Id = x }).ToList();
 			context.Categories.AddRange(categories);
 			await context.SaveChangesAsync();
 			foreach (var c in categories)
 				context.Entry(c).State = EntityState.Detached;
 			return categories;
+		}
+
+		private async Task<List<Tag>> CreateTagsInDBAsync(int count)
+		{
+			var tags = Enumerable.Range(1, count).Select(x => new Tag() { Id = x, Name = $"Tag_{x.ToString()}" }).ToList();
+			context.Tags.AddRange(tags);
+			await context.SaveChangesAsync();
+			foreach (var t in tags)
+				context.Entry(t).State = EntityState.Detached;
+			return tags;
 		}
 	}
 }

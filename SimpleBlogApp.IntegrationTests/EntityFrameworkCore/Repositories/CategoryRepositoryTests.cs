@@ -44,7 +44,7 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 		}
 
 		[Fact]
-		public async Task GetAsync_NoPostWithGivenIdExists_ShouldNotBeReturned()
+		public async Task GetAsync_NoCategoryWithGivenIdExists_ShouldNotBeReturned()
 		{
 			var category = await CreateCategoryInDBAsync();
 
@@ -117,12 +117,34 @@ namespace SimpleBlogApp.IntegrationTests.EntityFrameworkCore.Repositories
 			updatedPost.Should().BeEquivalentTo(updatedCategoryShouldBe);
 		}
 
-		private async Task<Category> CreateCategoryInDBAsync()
+		[Fact]
+		public async Task IsExistAsync_ValidRequest_ShouldReturnTrue()
+		{
+			string name = "Category 1";
+			var categoryToRemove = await CreateCategoryInDBAsync(name);
+
+			bool result = await repository.IsExistAsync(name);
+
+			result.Should().BeTrue();
+		}
+
+		[Fact]
+		public async Task IsExistAsync_NoCategoryWithGivenNameExists_ShouldReturnTrue()
+		{
+			string name = "Category 1";
+			var categoryToRemove = await CreateCategoryInDBAsync(name);
+
+			bool result = await repository.IsExistAsync("Category 2");
+
+			result.Should().BeFalse();
+		}
+
+		private async Task<Category> CreateCategoryInDBAsync(string name = "Category name")
 		{
 			var dateCreated = DateTime.Now;
 			var category = new Category()
 			{
-				Name = "Category_1",
+				Name = name,
 				IsActive = true,
 				DateCreated = dateCreated,
 				DateLastUpdated = dateCreated

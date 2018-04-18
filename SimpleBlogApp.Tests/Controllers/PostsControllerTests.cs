@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleBlogApp.Controllers;
-using SimpleBlogApp.Tests.FakeDependencies;
+using SimpleBlogApp.Tests.FakeDependencies.Services;
 using SimpleBlogApp.ViewModels.QueryViewModels;
 using SimpleBlogApp.ViewModels.SaveViewModels;
 using SimpleBlogApp.ViewModels.ViewModels;
@@ -170,7 +170,6 @@ namespace SimpleBlogApp.Tests.Controllers
 			var objectResult = result.Should().BeOfType<StatusCodeResult>().Subject;
 			objectResult.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
 		}
-
 
 		[Fact]
 		public async Task UpdatePost_ModelStateIsNotValid_BadRequestObjectResultWithModelState()
