@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SimpleBlogApp.Core.Interfaces;
 using SimpleBlogApp.Core.Models;
+using SimpleBlogApp.Extensions;
 using SimpleBlogApp.Services.Interfaces;
 using SimpleBlogApp.ViewModels.SaveViewModels;
 using SimpleBlogApp.ViewModels.ViewModels;
@@ -32,6 +33,8 @@ namespace SimpleBlogApp.Services
 
 		public async Task<Category> AddIfNotExists(SaveCategoryViewModel saveCategory)
 		{
+			saveCategory.NotNull();
+
 			if (await categoryRepository.IsExistAsync(saveCategory.Name))
 				return null;
 

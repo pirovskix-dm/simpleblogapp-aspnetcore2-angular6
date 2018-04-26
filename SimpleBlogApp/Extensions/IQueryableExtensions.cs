@@ -12,6 +12,9 @@ namespace SimpleBlogApp.Extensions
 		public static IQueryable<TEntity> ApplyPaging<TEntity>(this IQueryable<TEntity> query, IQueryObject queryObj) 
 			where TEntity : class
 		{
+			query.NotNull();
+			queryObj.NotNull();
+
 			if (queryObj.Page <= 0)
 				queryObj.Page = 1;
 
@@ -25,6 +28,8 @@ namespace SimpleBlogApp.Extensions
 		public static IQueryable<TEntity> ApplyOrdering<TEntity>(this IQueryable<TEntity> query, IQueryObject queryObj) 
 			where TEntity : class
 		{
+			query.NotNull();
+
 			if (string.IsNullOrWhiteSpace(queryObj.SortBy))
 				return query;
 
@@ -34,6 +39,11 @@ namespace SimpleBlogApp.Extensions
 		public static IOrderedQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, string propertyString, bool IsSortAscending)
 			where TEntity : class
 		{
+			query.NotNull();
+
+			if (string.IsNullOrWhiteSpace(propertyString))
+				return (IOrderedQueryable<TEntity>)query;
+
 			string[] propSequence = propertyString.Split('.', StringSplitOptions.RemoveEmptyEntries);
 			var parameter = Expression.Parameter(typeof(TEntity), "x");
 			Expression property = Expression.Property(parameter, propSequence[0]);
@@ -53,6 +63,9 @@ namespace SimpleBlogApp.Extensions
 
 		public static IQueryable<Post> ApplyFiltering(this IQueryable<Post> query, PostQuery queryObj)
 		{
+			query.NotNull();
+			queryObj.NotNull();
+
 			if (queryObj.CategoryId.HasValue)
 				query = query.Where(p => p.CategoryId == queryObj.CategoryId.Value);
 
@@ -64,6 +77,8 @@ namespace SimpleBlogApp.Extensions
 
 		public static IQueryable<Post> ApplySearching(this IQueryable<Post> query, PostQuery queryObj)
 		{
+			query.NotNull();
+
 			if (string.IsNullOrWhiteSpace(queryObj.Search))
 				return query;
 

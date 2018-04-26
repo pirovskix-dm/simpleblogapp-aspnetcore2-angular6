@@ -23,6 +23,7 @@ namespace SimpleBlogApp.EntityFrameworkCore.Repositories
 
 		public async Task<IEnumerable<T>> GetAllAsync<T>(Expression<Func<Post, T>> exp)
 		{
+			exp.NotNull();
 			return await context.Posts
 				.Include(p => p.Category)
 				.Include(p => p.Tags)
@@ -33,21 +34,26 @@ namespace SimpleBlogApp.EntityFrameworkCore.Repositories
 
 		public async Task<IEnumerable<IdObject<T>>> GetTagsAsync<T>(Expression<Func<IdObject<Tag>, IdObject<T>>> exp)
 		{
+			exp.NotNull();
 			return await GetTags(null, exp).ToListAsync();
 		}
 
 		public async Task<IEnumerable<IdObject<T>>> GetTagsAsync<T>(int post, Expression<Func<IdObject<Tag>, IdObject<T>>> exp)
 		{
+			exp.NotNull();
 			return await GetTags(new[] { post }, exp).ToListAsync();
 		}
 
 		public async Task<IEnumerable<IdObject<T>>> GetTagsAsync<T>(IEnumerable<int> posts, Expression<Func<IdObject<Tag>, IdObject<T>>> exp)
 		{
+			exp.NotNull();
+			posts.NotNull();
 			return await GetTags(posts, exp).ToListAsync();
 		}
 
 		private IQueryable<IdObject<T>> GetTags<T>(IEnumerable<int> posts, Expression<Func<IdObject<Tag>, IdObject<T>>> exp)
 		{
+			exp.NotNull();
 			var query = context.PostTags
 				.Include(pt => pt.Tag)
 				.AsQueryable();
@@ -62,6 +68,9 @@ namespace SimpleBlogApp.EntityFrameworkCore.Repositories
 
 		public async Task<QueryResult<T>> GetQueryResultAsync<T>(PostQuery queryObj, Expression<Func<Post, T>> exp)
 		{
+			queryObj.NotNull();
+			exp.NotNull();
+
 			var result = new QueryResult<T>();
 
 			var query = context.Posts
@@ -89,6 +98,7 @@ namespace SimpleBlogApp.EntityFrameworkCore.Repositories
 
 		public async Task<T> GetAsync<T>(int id, Expression<Func<Post, T>> exp)
 		{
+			exp.NotNull();
 			return await context.Posts
 				.Include(p => p.Category)
 				.Include(p => p.Tags)
@@ -100,16 +110,19 @@ namespace SimpleBlogApp.EntityFrameworkCore.Repositories
 
 		public void Add(Post post)
 		{
+			post.NotNull();
 			context.Posts.Add(post);
 		}
 
 		public void Remove(Post post)
 		{
+			post.NotNull();
 			context.Posts.Remove(post);
 		}
 
 		public void Update(Post post)
 		{
+			post.NotNull();
 			var entry = context.Posts.Update(post);
 			entry.Property(e => e.IsActive).IsModified = false;
 			entry.Property(e => e.DateCreated).IsModified = false;

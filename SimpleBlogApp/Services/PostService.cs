@@ -3,6 +3,7 @@ using SimpleBlogApp.Core.Interfaces;
 using SimpleBlogApp.Core.Models;
 using SimpleBlogApp.Core.Query;
 using SimpleBlogApp.Core.Query.Models;
+using SimpleBlogApp.Extensions;
 using SimpleBlogApp.Services.Interfaces;
 using SimpleBlogApp.ViewModels.QueryViewModels;
 using SimpleBlogApp.ViewModels.SaveViewModels;
@@ -59,6 +60,8 @@ namespace SimpleBlogApp.Services
 
 		public async Task<QueryResult<PostViewModel>> GetBlogViewModels(PostQueryViewModel queryViewModel)
 		{
+			queryViewModel.NotNull();
+
 			var query = mapper.Map<PostQueryViewModel, PostQuery>(queryViewModel);
 			var result = await postRepository.GetQueryResultAsync(query, (Post p) => new PostViewModel()
 			{
@@ -80,6 +83,8 @@ namespace SimpleBlogApp.Services
 
 		public async Task<QueryResult<PostViewModel>> GetAdminViewModels(PostQueryViewModel queryViewModel)
 		{
+			queryViewModel.NotNull();
+
 			var query = mapper.Map<PostQueryViewModel, PostQuery>(queryViewModel);
 			var result = await postRepository.GetQueryResultAsync(query, (Post p) => new PostViewModel()
 			{
@@ -124,6 +129,8 @@ namespace SimpleBlogApp.Services
 
 		public async Task<Post> UpdatePost(int id, SavePostViewModel savePost, IEnumerable<Tag> tags)
 		{
+			savePost.NotNull();
+
 			var post = await postRepository.GetAsync(id, p => p);
 
 			if (post == null)
@@ -142,6 +149,8 @@ namespace SimpleBlogApp.Services
 
 		public Post AddPost(SavePostViewModel savePost, IEnumerable<Tag> tags)
 		{
+			savePost.NotNull();
+
 			ValidateShortContent(savePost);
 
 			var post = mapper.Map<SavePostViewModel, Post>(savePost);

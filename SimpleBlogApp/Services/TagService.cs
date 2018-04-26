@@ -1,5 +1,6 @@
 ﻿using SimpleBlogApp.Core.Interfaces;
 using SimpleBlogApp.Core.Models;
+using SimpleBlogApp.Extensions;
 using SimpleBlogApp.Services.Interfaces;
 using SimpleBlogApp.ViewModels.ViewModels;
 using System;
@@ -20,6 +21,8 @@ namespace SimpleBlogApp.Services
 
 		public async Task<IEnumerable<Tag>> FindByNamesAndAddIfNotExists(IEnumerable<string> tags)
 		{
+			tags.NotNull();
+
 			var existingTags = await tagRepository.FindByNamesAsync(tags, t => t);
 			var missingNames = tags.Where(t => !existingTags.Any(e => e.Name == t));
 
@@ -41,6 +44,9 @@ namespace SimpleBlogApp.Services
 
 		public async Task<IEnumerable<TagViewModel>> FindFirsTagsLike(string name, int numOfRecords)
 		{
+			if (string.IsNullOrWhiteSpace(name) || numOfRecords <= 0)
+				return new List<TagViewModel>();
+
 			return await tagRepository.FindByNameAsync(name, numOfRecords, t => new TagViewModel()
 			{
 				Id = t.Id,
